@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💔 Fake Love Finder Quiz 💖</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      color: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 500px;
+      margin: 80px auto;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(8px);
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .question {
+      margin: 20px 0;
+      font-size: 18px;
+      color: #fff;
+    }
+    .option {
+      display: block;
+      margin: 10px 0;
+      background: #ff758c;
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .option:hover {
+      background: #ff5470;
+    }
+    button {
+      background: #fff;
+      color: #ff5470;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 20px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #ff5470;
+      color: #fff;
+    }
+    #result {
+      display: none;
+      font-size: 20px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💔 Fake Love Finder Quiz 💖</h1>
+    <p id="question" class="question"></p>
+    <div id="options"></div>
+    <button id="nextBtn" onclick="nextQuestion()">Next ➜</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      { q: "How often do they text you first?", a: [2, 1, 0] },
+      { q: "Do they remember little things about you?", a: [2, 1, 0] },
+      { q: "How do they act when you’re upset?", a: [2, 1, 0] },
+      { q: "Do they talk about a future with you?", a: [2, 1, 0] },
+      { q: "Do they introduce you to friends?", a: [2, 1, 0] },
+      { q: "Do they compliment you genuinely?", a: [2, 1, 0] },
+      { q: "How fast do they reply to your texts?", a: [2, 1, 0] },
+      { q: "Do they make time to meet you?", a: [2, 1, 0] },
+      { q: "Do they support your goals?", a: [2, 1, 0] },
+      { q: "How do they act in public with you?", a: [2, 1, 0] }
+    ];
+
+    const answers = [
+      ["Always 💖", "Sometimes 😅", "Only when they need something 👀"],
+      ["Yes, always 🥰", "Sometimes 🤔", "Never 😒"],
+      ["They comfort me 💫", "They say 'ok' 😶", "They disappear 😤"],
+      ["Yes 💍", "Maybe once 🫠", "Avoid the topic 🚫"],
+      ["Yes 😍", "Not yet 🤷‍♂️", "Nope 😑"],
+      ["Feels genuine 💕", "Sometimes 👍", "Feels fake 😩"],
+      ["Instant 😍", "After a while 😅", "After 2 days 😒"],
+      ["Always finds time 💫", "Sometimes 🕐", "Never 💤"],
+      ["Always motivates me 💪", "A little 💬", "Not really 😐"],
+      ["Proudly 🥰", "Normal 🙂", "Avoids me 😔"]
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("nextBtn");
+    const resultEl = document.getElementById("result");
+
+    function loadQuestion() {
+      questionEl.innerHTML = quizData[current].q;
+      optionsEl.innerHTML = "";
+      answers[current].forEach((optionText, i) => {
+        const opt = document.createElement("div");
+        opt.classList.add("option");
+        opt.innerText = optionText;
+        opt.onclick = () => selectOption(i);
+        optionsEl.appendChild(opt);
+      });
+    }
+
+    function selectOption(index) {
+      score += quizData[current].a[index];
+      Array.from(optionsEl.children).forEach(opt => opt.style.pointerEvents = "none");
+      optionsEl.children[index].style.background = "#ff3366";
+    }
+
+    function nextQuestion() {
+      if (current < quizData.length - 1) {
+        current++;
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      questionEl.style.display = "none";
+      optionsEl.style.display = "none";
+      nextBtn.style.display = "none";
+      resultEl.style.display = "block";
+      let msg = "";
+      if (score >= 17) msg = "❤️ True Love Detected! They genuinely care about you.";
+      else if (score >= 10) msg = "💞 Half Real, Half Confused — Maybe, maybe not!";
+      else msg = "💔 Fake Love Alert! Time to move on, Tamizh!";
+      resultEl.innerHTML = `<b>Your Score:</b> ${score}/20 <br><br>${msg}`;
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
